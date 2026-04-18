@@ -1,7 +1,7 @@
 
 @import "tailwindcss";
 @plugin "daisyui" {
-  include: button, input, select;
+  include: button, input, select, Badge;
 }
 
 *{
