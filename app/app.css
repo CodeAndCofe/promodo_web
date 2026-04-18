@@ -1,0 +1,13 @@
+
+@import "tailwindcss";
+@plugin "daisyui" {
+  include: button, input, select;
+}
+
+*{
+    /* padding: 0; */
+    /* margin:  0; */
+    box-sizing: border-box;
+}
+
+
