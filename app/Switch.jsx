@@ -28,7 +28,7 @@ export default function Log_in_section({SIGNUP, LOGIN})
             SIGNUP(username, password, tag);
         }
 
-        function LogIn(password, username)
+        function LogIn(username, password)
         {
             LOGIN(username, password);
         }

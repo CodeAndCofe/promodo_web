@@ -3,16 +3,29 @@ import "./app.css";
 import  Log_in_section from "./Switch"
 export default  function Home() {
 
-  function  log_in(username : string, password : string)
+  async function  log_in(username : string, password : string)
   {
-    // when user log int and the log in are sucess the user go to home page and can start
-    // promodo timer in peace
-    // else the user should retry write the username and password
+
+    const res = await fetch ("/api/login",
+      {
+        headers:{
+          "content-Type" : "application/json"
+        },
+        method: "POST",
+        body: JSON.stringify({
+          username: username, password : password
+        })
+      }
+    );
+    const response = await res.json();
+
+    console.log(response);
   }
 
 
   async function  create_acount(username : string, password : string, tag : string)
   {
+    console.log(username);
       const res = await fetch("/api/signup", {
          headers: {
             "Content-Type": "application/json",
@@ -25,17 +38,7 @@ export default  function Home() {
       console.log(data);
   }
 
-  async function show_users_table() {
-      const res = await fetch("/api/signup", {
-         headers: {
-            "Content-Type": "application/json",
-          },
-          method: "GET",
-        });
 
-      const data = await res.json();
-      console.log(data);
-  }
 
   return (
     <>
