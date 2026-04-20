@@ -1,4 +1,5 @@
 "use client";
+import { redirect } from "next/navigation";
 import "./app.css";
 import  Log_in_section from "./Switch"
 export default  function Home() {
@@ -19,7 +20,11 @@ export default  function Home() {
     );
     const response = await res.json();
 
-    console.log(response);
+    console.log(response)
+    if (response.success)
+    {
+      redirect('/main');
+    }
   }
 
 

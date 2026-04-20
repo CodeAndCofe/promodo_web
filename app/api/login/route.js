@@ -1,80 +1,59 @@
-import { pool } from "../tools";
+import { pool } from "../tools/pool";
+import { hashing, checker } from "../tools/handler";
+import bcryptjs from "bcryptjs"
 import { NextResponse } from "next/server";
-import bcrypt from "bcrypt";
+
+
 
 export async function POST(req) {
   try {
-        const { username, password, tag } = await req.json();
-
-        if (!username || username.length < 3) {
-        return NextResponse.json(
-            { message: "Username must be at least 3 characters", success: false },
-            { status: 400 }
-        );
+        const { username, password} = await req.json();
+        const res = await checker(username, password);
+        if (!res.success)
+        {
+            return (
+                NextResponse.json(
+                    {
+                        message : res.message, success: false
+                    },
+                    {
+                        status : res.status
+                    }
+                )
+            )
         }
-
-        if (!password || password.length < 6) {
-        return NextResponse.json(
-            { message: "Password must be at least 6 characters", success: false },
-            { status: 400 }
-        );
-        }
-
-        if (!tag || tag.length < 1) {
-        return NextResponse.json(
-            {
-                message: "Tag is required", success: false 
-            },
-            {
-                status: 400 
-            }
-        );
-        }
-
-        // Check if username already exists
+        
         const existingUser = await pool.query
         (
-            `SELECT username FROM users WHERE username = $1`,
+            `SELECT (password) FROM users WHERE username = $1`,
             [username]
         );
 
-        if (existingUser.rows.length > 0) {
-        return NextResponse.json(
-            { message: "User already exists", success: false },
-            { status: 409 }
-        );
+
+        if (existingUser.rows.length <= 0) {
+            return NextResponse.json(
+                { message: "Cant's log in", success: false },
+                { status: 409 }
+            );
         }
 
-        // Hash the password
-        const saltRounds = 12;
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
+        console.log(bcryptjs.compare(password, existingUser.rows[0].password));
 
-        // Insert user with hashed password
-        const userResult = await pool.query
-        (
-            `INSERT INTO users (username, password) 
-            VALUES ($1, $2) 
-            RETURNING id`,
-            [username, hashedPassword]
-        );
-
-        const userId = userResult.rows[0].id;
-
-        // Insert profile
-        await pool.query
-        (
-            `INSERT INTO profile (tag, id) VALUES ($1, $2)`,
-            [tag, userId]
-        );
-
-        return NextResponse.json({
-        message: "User created successfully",
-        success: true
-        }, { status: 201 });
+        return(
+            NextResponse.json(
+                {
+                    message : "sucess to log in",
+                    success: true
+                },
+                {
+                    status : 200
+                }
+            )    
+        )
 
     }
     catch (err) {
-        console.error("Registration error:", err);   // log on server only
+        console.error("login error:", err);
 
         return NextResponse.json({
         message: "Registration failed. Please try again.",
