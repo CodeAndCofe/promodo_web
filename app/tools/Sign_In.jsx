@@ -2,7 +2,7 @@
 // later handle tags
 import { useRef } from "react";
 
-export default  function  Sign_in_dev({Switch_button, tags, callBack})
+export default  function  Sign_in_dev({Switch_button, tags, callBack, switch_tag, tag_target})
 {
             const   password = useRef(null);
             const   username = useRef(null);
@@ -27,10 +27,15 @@ export default  function  Sign_in_dev({Switch_button, tags, callBack})
                         </div>
                     {/* end of users input */}
                     {/* tags */}
-
-                   <div className="w-full grid grid-cols-3 gap-4 py-5">
+                    <h2 className="p-2 mt-5 font-bold text-lg">chose your reason:</h2>
+                    <div className="w-full grid grid-cols-4 gap-4 py-5 ">
                         {tags.map((tag, index) => (
-                            <input type="button"  className="btn btn-error text-white" key={index} value={tag} />
+                            <input type="button" 
+                                    className={`cursor-pointer px-4 py-2 rounded-full transition-all duration-200 border
+                                    ${tag_target === tag
+                                    ? "bg-red-500 text-white border-red-500 scale-100 font-bold"
+                                    : "bg-white text-gray-700 border-gray-300 hover:bg-red-100 hover:text-red-500"}`}
+                                    onClick={()=> switch_tag(tag)}  key={index} value={tag} />
                         ))}
                     </div>
 

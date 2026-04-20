@@ -5,15 +5,17 @@ import Log_in_dev from "./tools/Log_In_dev"
 import Sign_in_dev from "./tools/Sign_In"
 export default function Log_in_section({SIGNUP, LOGIN})
 {
-    // all tags for creating account
-
-    const   tags = ["coding", "writing", "college studying", "research", "work", "exam"];
-    // end
-    // switch log in user and creating account state
-    const [isLogIn, setisLogIn] = useState(false);
+        const   tags = ["coding", "writing", "research", "work", "exam", "study"];
+        // switch log in user and creating account state
+        const [isLogIn, setisLogIn] = useState(false);
    
-    const [tag, setTag] = useState("study");
+        const [tag, setTag] = useState("study");
 
+
+        function    switch_tag(val)
+        {
+            setTag(val);
+        }
 
         function Switch_button()
         {
@@ -24,7 +26,8 @@ export default function Log_in_section({SIGNUP, LOGIN})
         {
             if (password != cpassword)
                     return (console.log("passwords arent equals"));
-            SIGNUP(username, password, cpassword);
+            console.log(tag);
+            SIGNUP(username, password, tag);
         }
 
         function LogIn(password, username)
@@ -37,7 +40,7 @@ export default function Log_in_section({SIGNUP, LOGIN})
      return (
         <>
             {isLogIn? <Log_in_dev  Switch_button={Switch_button} callBack={LogIn}/>
-            : <Sign_in_dev  tags={tags} Switch_button={Switch_button} callBack={signIn} />
+            : <Sign_in_dev switch_tag={switch_tag}  tags={tags} tag_target={tag} Switch_button={Switch_button} callBack={signIn} />
             }
         </>
     );

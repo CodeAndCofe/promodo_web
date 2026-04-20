@@ -8,7 +8,7 @@ export  async function POST(req)
         const {username, password, tag} = await req.json();
         console.log(tag);
         const result = await pool.query('INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id', [username, password]);
-        await pool.query("INSERT INTO profile (tag) VALUES ($1)", [tag, result.rows[0].id]);
+        await pool.query("INSERT INTO profile (tag, id) VALUES ($1, $2)", [tag, result.rows[0].id]);
         return Response.json({
             message : "response sucess",
         })
@@ -29,7 +29,7 @@ export  async function GET()
 {
     try
     {
-        const result = await pool.query('SELECT * FROM users');
+        const result = await pool.query('SELECT * FROM profile');
 
         return Response.json({
 

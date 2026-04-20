@@ -22,7 +22,7 @@ export default  function Home() {
       });
 
       const data = await res.json();
-      // console.log(data);
+      console.log(data);
   }
 
   async function show_users_table() {
