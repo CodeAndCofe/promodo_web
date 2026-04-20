@@ -6,7 +6,6 @@ import Sign_in_dev from "./tools/Sign_In"
 export default function Log_in_section({SIGNUP, LOGIN})
 {
         const   tags = ["coding", "writing", "research", "work", "exam", "study"];
-        // switch log in user and creating account state
         const [isLogIn, setisLogIn] = useState(false);
    
         const [tag, setTag] = useState("study");
@@ -26,15 +25,12 @@ export default function Log_in_section({SIGNUP, LOGIN})
         {
             if (password != cpassword)
                     return (console.log("passwords arent equals"));
-            console.log(tag);
             SIGNUP(username, password, tag);
         }
 
         function LogIn(password, username)
         {
-            console.log("log in");
-            console.log(username);
-            LOGIN();
+            LOGIN(username, password);
         }
        
      return (

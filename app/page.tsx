@@ -3,7 +3,7 @@ import "./app.css";
 import  Log_in_section from "./Switch"
 export default  function Home() {
 
-  function  log_in()
+  function  log_in(username : string, password : string)
   {
     // when user log int and the log in are sucess the user go to home page and can start
     // promodo timer in peace
@@ -39,7 +39,6 @@ export default  function Home() {
 
   return (
     <>
-      <button className="bg-gray-500 text-xl text-white p-50" onClick={show_users_table}>click</button>
       <Log_in_section SIGNUP={create_acount} LOGIN={log_in}/>
     </>
   );

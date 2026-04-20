@@ -6,7 +6,18 @@ export  async function POST(req)
     try
     {
         const {username, password, tag} = await req.json();
-        console.log(tag);
+
+
+        const   row = await pool.query
+        (`
+            SELECT username
+            FROM users
+            WHERE username = $1;
+            `
+            , [username]
+        );
+        if (row.rows.length !== 0)
+                throw ("user already exist");
         const result = await pool.query('INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id', [username, password]);
         await pool.query("INSERT INTO profile (tag, id) VALUES ($1, $2)", [tag, result.rows[0].id]);
         return Response.json({
@@ -20,26 +31,6 @@ export  async function POST(req)
             message : "response fails",
             error : err
         })
-    }
-    
-}
-
-
-export  async function GET()
-{
-    try
-    {
-        const result = await pool.query('SELECT * FROM profile');
-
-        return Response.json({
-
-            message : result.rows,
-        })
-
-    }
-    catch(err)
-    {
-        return Response.json({message : "response fails"})
     }
     
 }
