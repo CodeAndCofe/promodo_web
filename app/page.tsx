@@ -10,6 +10,7 @@ export default  function Home() {
     // else the user should retry write the username and password
   }
 
+
   async function  create_acount(username : string, password : string, tag : string)
   {
       const res = await fetch("/api/signup", {
@@ -21,7 +22,7 @@ export default  function Home() {
       });
 
       const data = await res.json();
-      console.log(data);
+      // console.log(data);
   }
 
   async function show_users_table() {
