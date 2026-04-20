@@ -34,11 +34,9 @@ export default  function  Sign_in_dev({Switch_button, tags, callBack})
                         ))}
                     </div>
 
-
-
                     {/* buttons */}
                     <div className="flex flex-col gap-5">
-                            <button className="btn border-red-200 btn-active bg-[#6a040f] text-lg hover:bg-[#a53860]" onClick={()=> {callBack(username.current?.value, password.current?.value, cpassword.current?.value)}}>log in</button>
+                            <button className="btn border-red-200 btn-active bg-[#6a040f] text-lg hover:bg-[#a53860]" onClick={()=> {callBack(username.current?.value, password.current?.value, cpassword.current?.value)}}>Create</button>
                             <button className="btn btn-outline btn-secondary hover:bg-[#a53860] hover:bg-[#a53860] text-lg" onClick={Switch_button}>Log into existing acount</button>
                     </div>
                     </div>
