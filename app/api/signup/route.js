@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { pool } from "../tools/pool";
 import { hashing, checker } from "../tools/handler";
-
+import bcryptjs from "bcryptjs"
 
 
 
@@ -41,9 +41,7 @@ export async function POST(req) {
           { status: 409 }
         );
       }
-
-      const hashedPassword = hashing(password, 12);
-
+      const hashedPassword = await hashing(password, 12);
       const userResult = await pool.query(
         `INSERT INTO users (username, password) 
         VALUES ($1, $2) 

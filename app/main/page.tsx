@@ -1,17 +1,38 @@
-import { cookies } from 'next/headers';
-import NotFound  from '../Gcomponent/NotFound';
+"use client";
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import Forbidden from "../Gcomponent/Forbidden";
 import "../app.css";
 
-export default async function DashboardPage() {
-  const cookieStore = await cookies();
-  const token = cookieStore.get('token')?.value;
+export default function DashboardPage() {
+  const searchParams = useSearchParams();
+  const user_id: string | null = searchParams.get("id");
 
-  if (!token)
-    return (<><NotFound/></>)
+  const [user, setUser] = useState<string | null>(null);
+  const [password, setPassword] = useState<string | null>(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    setUser(storedUser);
+
+    if (storedUser) {
+      setPassword(localStorage.getItem(storedUser));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (user_id) {
+      console.log(user_id);
+    }
+  }, [user_id]);
+
+  if (!user || !password) {
+    return <Forbidden />;
+  }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br  from-[#cde0ff] via-[#e0f0ff] to-[#f8e1f0] text-gray-900 flex items-center justify-center p-6">
-
+    <div className="min-h-screen bg-gradient-to-br from-[#cde0ff] via-[#e0f0ff] to-[#f8e1f0] flex items-center justify-center p-6">
+      Dashboard for user {user_id}
     </div>
   );
 }

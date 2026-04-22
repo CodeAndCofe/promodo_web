@@ -1,0 +1,11 @@
+
+// i need to store tasks for each user ?
+//  the first approach is to create for each user a table named by user name:
+// other approach is creating single table but its has id of user and insert new  data. that gonna work
+// i will add for each task a the how hard the task and how many hour would take to complete
+
+
+// the user should chose which task he/she work on and wehter the task completed or not
+// user can send friendship to 
+//
+//

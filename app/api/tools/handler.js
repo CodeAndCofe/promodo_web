@@ -4,9 +4,9 @@ import bcryptjs from "bcryptjs"
 
 
 
-async function hashing(val, saltround)
+async function hashing(password, saltRounds)
 {
-	return (await bcrypt.hash(password, saltRounds));
+	return (await bcryptjs.hash(password, saltRounds));
 }
 
 async function checker(username, password)

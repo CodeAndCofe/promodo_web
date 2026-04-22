@@ -2,6 +2,7 @@ import { pool } from "../tools/pool";
 import { hashing, checker } from "../tools/handler";
 import bcryptjs from "bcryptjs"
 import { NextResponse } from "next/server";
+import { existsSync } from "fs";
 
 
 
@@ -25,7 +26,7 @@ export async function POST(req) {
         
         const existingUser = await pool.query
         (
-            `SELECT (password) FROM users WHERE username = $1`,
+            `SELECT password, id FROM users WHERE username = $1`,
             [username]
         );
 
@@ -37,13 +38,14 @@ export async function POST(req) {
             );
         }
 
-        console.log(bcryptjs.compare(password, existingUser.rows[0].password));
-
+        const bRes = await bcryptjs.compare(password, existingUser.rows[0].password);
+        console.log(bRes);
         return(
             NextResponse.json(
                 {
                     message : "sucess to log in",
-                    success: true
+                    success: true,
+                    id: existingUser.rows[0].id
                 },
                 {
                     status : 200
@@ -57,7 +59,7 @@ export async function POST(req) {
 
         return NextResponse.json({
         message: "Registration failed. Please try again.",
-        success: false
+        success: false,
         }, { status: 500 });
     }
 }

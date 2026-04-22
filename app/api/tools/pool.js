@@ -11,11 +11,15 @@ const pool = new Pool({
 });
 
 
-process.on("SIGINT", async () => {
-    await pool.end();
-    console.log("Pool has ended");
-});
+let shuttingDown = false;
 
+process.on("SIGINT", async () => {
+  if (shuttingDown) return;
+  shuttingDown = true;
+
+  await pool.end();
+  console.log("Pool closed");
+});
 
 
 

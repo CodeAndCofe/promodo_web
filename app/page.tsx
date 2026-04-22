@@ -7,8 +7,6 @@ export default  function Home() {
 
   const [save, setSave] = useState({username: "", password: ""});
 
-
-  
   useEffect(()=>
   {
       if (!save.username)
@@ -23,20 +21,6 @@ export default  function Home() {
       }
       console.log("process completed");
   }, [save])
-
-  useEffect(()=>
-  {
-    // localStorage.clear()
-      const username = localStorage.getItem("user")?? null;
-      if (!username)
-          return;
-      const password = localStorage.getItem(username);
-      if (!password)
-        return;
-      log_in(username, password);
-
-  }, [])
-
 
   async function  log_in(username : string, password : string)
   {
@@ -53,7 +37,6 @@ export default  function Home() {
     );
 
     const response = await res.json();
-    console.log("response => "+ response + ":::");
     if (response.success)
     {
       if (!localStorage.getItem(username))
@@ -63,7 +46,7 @@ export default  function Home() {
             password : password
           });
       }
-        redirect('/main');
+        redirect(`/main?id=${response.id}`);
     }
   }
 
@@ -81,7 +64,7 @@ export default  function Home() {
 
       const data = await res.json();
       if (data.success)
-        log_in(username, password );
+        log_in(username, password);
       console.log(data);
   }
 
