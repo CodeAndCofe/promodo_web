@@ -46,7 +46,7 @@ export default  function Home() {
             password : password
           });
       }
-        redirect(`/main?id=${response.id}`);
+        redirect(`/main`);
     }
   }
 

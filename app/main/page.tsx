@@ -5,8 +5,6 @@ import Forbidden from "../Gcomponent/Forbidden";
 import "../app.css";
 
 export default function DashboardPage() {
-  const searchParams = useSearchParams();
-  const user_id: string | null = searchParams.get("id");
 
   const [user, setUser] = useState<string | null>(null);
   const [password, setPassword] = useState<string | null>(null);
@@ -20,11 +18,6 @@ export default function DashboardPage() {
     }
   }, []);
 
-  useEffect(() => {
-    if (user_id) {
-      console.log(user_id);
-    }
-  }, [user_id]);
 
   if (!user || !password) {
     return <Forbidden />;
@@ -32,7 +25,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#cde0ff] via-[#e0f0ff] to-[#f8e1f0] flex items-center justify-center p-6">
-      Dashboard for user {user_id}
+      Dashboard for user 
     </div>
   );
 }
