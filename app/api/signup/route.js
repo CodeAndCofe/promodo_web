@@ -25,7 +25,10 @@ export async function POST(req) {
       
       if (!tag || tag.length < 2) {
         return NextResponse.json(
-          { message: "Tag is required" },
+          {
+            message: "Tag is required",
+            success: false
+          },
           { status: 400 }
         );
       }
@@ -37,7 +40,10 @@ export async function POST(req) {
 
       if (existingUser.rows.length > 0) {
         return NextResponse.json(
-          { message: "User already exists" },
+          {
+            message: "User already exists",
+            success: false
+          },
           { status: 409 }
         );
       }
@@ -65,7 +71,7 @@ export async function POST(req) {
       }
       catch (err)
       {
-        console.error("Registration error:", err);   // Log on server only
+        console.error("Registration error:", err);
 
         return NextResponse.json({
           message: "Registration failed. Please try again.",

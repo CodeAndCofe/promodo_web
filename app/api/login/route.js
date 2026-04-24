@@ -10,12 +10,13 @@ export async function POST(req) {
     let session_id = 0;
   try {
         const { username, password} = await req.json();
+        console.log("here ---- > " + password);
         const res = await checker(username, password);
         if (!res.success)
-        {
-            return (
-                NextResponse.json(
-                    {
+            {
+                return (
+                    NextResponse.json(
+                        {
                         message : res.message, success: false
                     },
                     {
@@ -24,7 +25,6 @@ export async function POST(req) {
                 )
             )
         }
-        
         const existingUser = await pool.query
         (
             `SELECT password, id FROM users WHERE username = $1`,
@@ -43,8 +43,8 @@ export async function POST(req) {
         // imaginary creating 
         session_id = userid + 33;
         temporary_cache.set(session_id, userid);
-        return(
-            NextResponse.json(
+        const response = NextResponse.json
+            (
                 {
                     message : "sucess to log in",
                     success: true,
@@ -52,9 +52,9 @@ export async function POST(req) {
                 {
                     status : 200
                 }
-            ).cookies.set("session_id", session_id) 
-        )
-
+            )
+        response.cookies.set("session_id", session_id);
+        return (response)
     }
     catch (err) {
         console.error("login error:", err);
