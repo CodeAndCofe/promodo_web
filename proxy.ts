@@ -1,27 +1,31 @@
 import { NextRequest, NextResponse} from "next/server";
+// // import {temporary_cache} from "@/global"
+// // it runs before the actuall route =>
 
-// it runs before the actuall route =>
-
-export function proxy( req  : NextRequest)
+export default function proxy( req  : NextRequest)
 {
-    const data = req.cookies.get("session_id");
-    console.log("+==============+\n")
-    console.log("inside proxy")
-    const cookie = data?.value;
-    console.log (cookie);
-    if (!cookie)
-        return NextResponse.redirect(new URL("/", req.url));    // console.log(data?.value)
     
-    console.log("\n+==============+")
-    return (NextResponse.next())
 }
+// {
+//     const data = req.cookies.get("session_id");
+//     console.log("+==============+\n")
+//     console.log("inside proxy")
+//     console.log("Middleware path:", req.nextUrl.pathname);
+//     const cookie = data?.value ?? null;
+//     // temporary_cache.get(cookie);
+//     // console.log (temporary_cache);
+//     console.log(cookie)
+//     if (!cookie)
+//         return NextResponse.redirect(new URL("/", req.url));
+//     console.log("\n+==============+")
+//     return (NextResponse.next())
+// }
 
 
 
-export const  config =
-{
-    matcher :  [
-        //exclude expression
-        '/((?!api|_next/static|_next/image|favicon.ico|^/$|forbiden|notfound).*)'
-    ]
-}
+// export const  config =
+// {
+//     matcher :  [
+//         '/((?!api|_next/static|_next/image|favicon.ico|forbiden|notfound|^/$).*)'
+//     ]
+// }
