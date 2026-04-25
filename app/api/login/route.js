@@ -1,67 +1,42 @@
 import { pool } from "../tools/pool";
 import { hashing, checker } from "../tools/handler";
 import bcryptjs from "bcryptjs"
+import { temporary_cache } from "@/global";
 import { NextResponse } from "next/server";
 
-const temporary_cache = new Map();
+
+// query for user id and return it
+async function validateUser(username, password)
+{
+    const existingUser = await pool.query(
+        `SELECT password, id FROM users WHERE username = $1`,
+        [username]
+    );
+    if (existingUser.rows.length === 0)
+        return null;
+    const valid = await bcryptjs.compare(password, existingUser.rows[0].password);
+    return valid ? existingUser.rows[0] : null;
+}
 
 export async function POST(req) {
-    let userid = 0;
-    let session_id = 0;
-  try {
-        const { username, password} = await req.json();
-        console.log("here ---- > " + password);
-        const res = await checker(username, password);
-        if (!res.success)
-            {
-                return (
-                    NextResponse.json(
-                        {
-                        message : res.message, success: false
-                    },
-                    {
-                        status : res.status
-                    }
-                )
-            )
-        }
-        const existingUser = await pool.query
-        (
-            `SELECT password, id FROM users WHERE username = $1`,
-            [username]
-        );
+    try {
+        const { username, password } = await req.json();
+        // basic length checks inline (or call checker with await)
 
+        const user = await validateUser(username, password);
+        if (!user) return NextResponse.json({ message: "Invalid credentials", success: false }, { status: 401 });
+        
+        const session_id = user.id + 33;
+        temporary_cache.set(session_id, user.id);
 
-        if (existingUser.rows.length <= 0) {
-            return NextResponse.json(
-                { message: "Cant's log in", success: false },
-                { status: 409 }
-            );
-        }
-        userid = existingUser.rows[0].id;  
-        const bRes = await bcryptjs.compare(password, existingUser.rows[0].password);
-        // imaginary creating 
-        session_id = userid + 33;
-        temporary_cache.set(session_id, userid);
-        const response = NextResponse.json
-            (
-                {
-                    message : "sucess to log in",
-                    success: true,
-                },
-                {
-                    status : 200
-                }
-            )
+        const response = NextResponse.json({ message: "success", success: true }, { status: 200 });
+        
         response.cookies.set("session_id", session_id);
-        return (response)
-    }
-    catch (err) {
-        console.error("login error:", err);
+        return response;
 
-        return NextResponse.json({
-        message: "Registration failed. Please try again.",
-        success: false,
-        }, { status: 500 });
+    } 
+    catch (err)
+    {
+        return NextResponse.json({ message: "Login failed", success: false }, { status: 500 });
     }
 }

@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import Forbidden from "../Gcomponent/Forbidden";
 import "../app.css";
 
 export default function DashboardPage() {
